@@ -1,0 +1,14 @@
+
+
+
+g++ -O3 -std=c++11 -c -Wall -fPIC EulerUtils.cpp -o EulerUtils.o
+
+
+g++ -shared -Wl,-soname,libEulerUtils.so.1 -o libEulerUtils.so.1.0.0 EulerUtils.o
+
+cp libEulerUtils.so.1.0.0 /usr/local/lib/
+
+cd /usr/local/lib/
+
+ln -s libEulerUtils.1.0.0 libEulerUtils
+
