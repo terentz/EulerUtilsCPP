@@ -19,6 +19,7 @@
 #include <sstream>
 #include <istream>
 #include <cmath>
+#include <set>
 //#include <stringstream>
 
 //#include <array>
@@ -33,6 +34,7 @@ using std::setprecision;
 using std::ostringstream;
 using std::string;
 using std::vector;
+using std::set;
 using std::ifstream;
 using std::fstream;
 using std::stringstream;
@@ -468,43 +470,50 @@ long long EulerUtils::NumberTheory::General::product( vector<long long> input ) 
     }
     return result;
 }
-vector<long long> EulerUtils::NumberTheory::Prime::gatherPrimesUpTo( long long n ) {
-    vector<long long> primes;
-    for ( long long i = 1 ; i <= n ; i++ ) {
+void EulerUtils::NumberTheory::General::rotate_int( unsigned int *x ) {
+    string x_str = to_string(*x);
+    unsigned short len = x_str.size();
+    *x = (unsigned short)stoi( x_str.substr(1)+x_str.substr(0,1) );
+}
+unsigned int EulerUtils::NumberTheory::General::rotate_int( unsigned int x ) {
+    string x_str = to_string(x);
+    unsigned short len = x_str.size();
+    return (unsigned short)stoi( x_str.substr(1)+x_str.substr(0,1) );
+}
+string EulerUtils::NumberTheory::General::rotate_str( string x ) {
+    return x.substr(1)+x.substr(0,1);
+}
+vector<unsigned long long> EulerUtils::NumberTheory::Prime::gatherPrimesUpTo( unsigned long long n ) {
+    vector<unsigned long long> primes;
+    for ( unsigned long long i = 1 ; i <= n ; i++ ) {
         if ( isPrime(i) ) primes.push_back(i);
     }
     return primes;
 }
-bool EulerUtils::NumberTheory::Prime::isPrime( long long input ) {
+bool EulerUtils::NumberTheory::Prime::isPrime( unsigned long long input ) {
     if ( input < 2 ) return false;
-    long long lim = floor(sqrt(input));
-	for( long long test = 2 ; test <= lim ; ++test )
+    unsigned long long lim = floor(sqrt(input));
+	for( unsigned long long test = 2 ; test <= lim ; ++test )
 		if( input % test == 0 )
 			return false;
 	return true;
 }
-long long EulerUtils::NumberTheory::Prime::nextPrime( long long input ){
-	long long current = input;
+unsigned long long EulerUtils::NumberTheory::Prime::nextPrime( unsigned long long input ){
+	unsigned long long current = input;
 	while (true)
 		if ( Prime::isPrime(++current) )
 			return current;
 	return 0;
 }
-long long EulerUtils::NumberTheory::Prime::nthPrime( long long n ) {
-	long long current, count;
-	for ( current = 2, count = 0 ; count < n ; current++ ) {
-		if ( Prime::isPrime( current ) ) {
-			// test
-			//cout << current << " is prime!" << endl;
-			count ++;
-			// test
-			//cout << " number " << count << endl;
-		}
-	}
+unsigned long long EulerUtils::NumberTheory::Prime::nthPrime( unsigned long long n ) {
+	unsigned long long current, tally;
+	for ( current = 2, tally = 0 ; tally < n ; current++ )
+		if ( Prime::isPrime( current ) )
+			tally ++;
 	return --current;
 
 }
-long long EulerUtils::NumberTheory::Prime::primesFactorial( long long n ) {
+unsigned long long EulerUtils::NumberTheory::Prime::primesFactorial( unsigned long long n ) {
     if ( n == 2 ) return n;
     else {
         if ( Prime::isPrime( n ) )
@@ -543,6 +552,23 @@ const unsigned long long EulerUtils::NumberTheory::Special::Fibonacci::nthFibona
 const unsigned long long EulerUtils::NumberTheory::Special::Fibonacci::fibonacciLessThanN( unsigned long long n ) {
     // TODO fill
     return 0;
+}
+const bool EulerUtils::NumberTheory::Special::Pandigital::isPandigital( string x ) {
+    set<unsigned short> digits;
+    // Init digits...
+    for ( unsigned short digit = 1 ; digit < 10 ; ++digit ) {
+        digits.insert(digit);
+//        cout << "digit : " << digit << endl;
+    }
+    for ( auto i = 0 ; i < x.size() ; ++i ) {
+        string ch = x.substr(i,1);
+        digits.erase((unsigned short)stoi(ch));
+    }
+
+    return digits.size() == 0;
+}
+const bool EulerUtils::NumberTheory::Special::Pandigital::isPandigital( unsigned int x ) {
+    return isPandigital( to_string(x) );
 }
 const short EulerUtils::NumberTheory::Special::Perfect::isDeficientPerfectOrAbundant( const unsigned long long n ) {
     unsigned long long sum = 1;
