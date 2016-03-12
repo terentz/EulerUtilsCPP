@@ -463,6 +463,10 @@ vector<long long> EulerUtils::NumberTheory::Factorise::primeFactorsSet( long lon
 	if ( Prime::isPrime(input) ) output.push_back(input);
 	return output;
 }
+bool EulerUtils::NumberTheory::General::even(long long n) {
+    if ( n < 0) n = n * -1;
+    return (n&1==1);
+}
 long long EulerUtils::NumberTheory::General::product( vector<long long> input ) {
     long long result = 1;
     for ( auto i = input.begin() ; i < input.end() ; i++ ) {

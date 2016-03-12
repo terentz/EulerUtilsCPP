@@ -135,7 +135,9 @@ namespace EulerUtils {
 
             template<typename I>
             inline bool even( I num ) { return ( num % 2 == 0 ); };
-            inline bool even(long long n) { return ( n % 2 == 0 ); };
+//            inline bool even(long long n) { return ( n % 2 == 0 ); };
+
+            bool even(long long n);
 
             template<typename I>
             inline bool pstv( I num ) { return ( num > 0 ); };
