@@ -412,34 +412,52 @@ void EulerUtils::Display::printVector ( string itemName, const vector<string> da
 **************************************************************************
 *************************************************************************/
 
-long long EulerUtils::NumberTheory::Factorise::gcd( long long a, long long b ) {
+unsigned long long EulerUtils::NumberTheory::Factorise::gcd( unsigned long long a, unsigned long long b ) {
     if ( b == 0 )
         return a;
     else
         return gcd(b, a%b);
 }
-set<unsigned long long> EulerUtils::NumberTheory::Factorise::integerDivisors( unsigned long long input, bool include_self ) {
-	set<unsigned long long> output;
-	output.insert(1);
-	for ( long long testFactor = 2 ; testFactor <= input/2 ; testFactor++ )
+vector<unsigned int> EulerUtils::NumberTheory::Factorise::integerDivisors( unsigned int input, bool include_self ) {
+	vector<unsigned int> output;
+	output.push_back(1);
+	for ( unsigned int testFactor = 2 ; testFactor <= input/2 ; testFactor++ )
 		if ( input % testFactor == 0 )
-            output.insert(testFactor);
+            output.push_back(testFactor);
 	if ( include_self )
-        output.insert(input);
+        output.push_back(input);
 	return output;
 }
-const vector<long long> EulerUtils::NumberTheory::Factorise::primeFactorsAll( long long input ) {
-    vector<long long> output;
-    long long remain = input;
-    // If input is equal to or greater than one, add one to the factor list and carry on,
-    // otherwise, return an empty vector
+vector<unsigned long int> EulerUtils::NumberTheory::Factorise::integerDivisors( unsigned long int input, bool include_self ) {
+	vector<unsigned long int> output;
+	output.push_back(1);
+	for ( unsigned long int testFactor = 2 ; testFactor <= input/2 ; testFactor++ )
+		if ( input % testFactor == 0 )
+            output.push_back(testFactor);
+	if ( include_self )
+        output.push_back(input);
+	return output;
+}
+vector<unsigned long long> EulerUtils::NumberTheory::Factorise::integerDivisors( unsigned long long input, bool include_self ) {
+	vector<unsigned long long> output;
+	output.push_back(1);
+	for ( unsigned long long testFactor = 2 ; testFactor <= input/2 ; testFactor++ )
+		if ( input % testFactor == 0 )
+            output.push_back(testFactor);
+	if ( include_self )
+        output.push_back(input);
+	return output;
+}
+const vector<unsigned long long> EulerUtils::NumberTheory::Factorise::primeFactorsAll( unsigned long long input ) {
+    vector<unsigned long long> output;
+    unsigned long long remain = input;
     if ( input > 0 ) {
         output.push_back(1);
         if ( input == 1 )
             return output;
     } else
         return output;
-    for ( long long testFactor = 2 ; testFactor <= input/2 ; testFactor++ ) {
+    for ( unsigned long long testFactor = 2 ; testFactor <= input/2 ; testFactor++ ) {
         if ( Prime::isPrime( testFactor ) )
             while ( remain % testFactor == 0 ) {
                 output.push_back(testFactor);
@@ -451,9 +469,9 @@ const vector<long long> EulerUtils::NumberTheory::Factorise::primeFactorsAll( lo
 }
 // TODO update this function (was allFactors()) to
 // vector<long>& 0EulerUtils::primeFactors( long long input, bool unique )
-vector<long long> EulerUtils::NumberTheory::Factorise::primeFactorsSet( long long input ) {
-	vector<long long> output;
-	for ( long long testFactor = 2 ; testFactor <= input/2 ; testFactor++ ) {
+vector<unsigned long long> EulerUtils::NumberTheory::Factorise::primeFactorsSet( unsigned long long input ) {
+	vector<unsigned long long> output;
+	for ( unsigned long long testFactor = 2 ; testFactor <= input/2 ; testFactor++ ) {
         cout << "input = " << input << " and testFactor = " << testFactor << endl;
 		if ( input % testFactor == 0 && Prime::isPrime( testFactor ) ) {
 			output.push_back(testFactor);
@@ -463,9 +481,12 @@ vector<long long> EulerUtils::NumberTheory::Factorise::primeFactorsSet( long lon
 	if ( Prime::isPrime(input) ) output.push_back(input);
 	return output;
 }
-bool EulerUtils::NumberTheory::General::even(long long n) {
+bool EulerUtils::NumberTheory::General::even(unsigned long long n) {
     if ( n < 0) n = n * -1;
     return (n&1==1);
+}
+bool EulerUtils::NumberTheory::General::isPalindrome( unsigned long int n ) {
+    return Strings::isPalindrome( to_string(n) );
 }
 long long EulerUtils::NumberTheory::General::product( vector<long long> input ) {
     long long result = 1;
@@ -486,6 +507,31 @@ unsigned int EulerUtils::NumberTheory::General::rotate_int( unsigned int x ) {
 }
 string EulerUtils::NumberTheory::General::rotate_str( string x ) {
     return x.substr(1)+x.substr(0,1);
+}
+//template<typename UI>
+//unsigned long long EulerUtils::NumberTheory::General::vector_sum( const vector<UI> ints ) {
+//    unsigned long long sum = 0;
+//    for ( auto i = ints.cbegin() ; i != ints.cend() ; ++i )
+//        sum += *i;
+//    return sum;
+//}
+unsigned int EulerUtils::NumberTheory::General::vector_sum( const vector<unsigned int> ints ) {
+    unsigned int sum = 0;
+    for ( auto i = ints.cbegin() ; i != ints.cend() ; ++i )
+        sum += *i;
+    return sum;
+}
+unsigned long int EulerUtils::NumberTheory::General::vector_sum( const vector<unsigned long int> ints ) {
+    unsigned long long sum = 0;
+    for ( auto i = ints.cbegin() ; i != ints.cend() ; ++i )
+        sum += *i;
+    return sum;
+}
+unsigned long long EulerUtils::NumberTheory::General::vector_sum( const vector<unsigned long long> ints ) {
+    unsigned long long sum = 0;
+    for ( auto i = ints.cbegin() ; i != ints.cend() ; ++i )
+        sum += *i;
+    return sum;
 }
 vector<unsigned long long> EulerUtils::NumberTheory::Prime::gatherPrimesUpTo( unsigned long long n ) {
     vector<unsigned long long> primes;
@@ -538,6 +584,20 @@ int EulerUtils::NumberTheory::Special::addDigits( string input ) {
         total += std::stoi( input.substr(c,1) );
     return total;
 }
+//template<typename UI>
+//const bool EulerUtils::NumberTheory::Special::Amicable::isAmicable( UI n ) {
+//    decltype(n) other = General::vector_sum(
+//            Factorise::integerDivisors(n, false)
+//        );
+//    return n == General::vector_sum( Factorise::integerDivisors(other, false) );
+//}
+const bool EulerUtils::NumberTheory::Special::Amicable::isAmicable( unsigned int n ) {
+    decltype(n) other = General::vector_sum(
+            Factorise::integerDivisors(n, false)
+        );
+    return n == General::vector_sum( Factorise::integerDivisors(other, false) ) && n != other;
+}
+
 const unsigned long long EulerUtils::NumberTheory::Special::Fibonacci::nthFibonacciNumber_recursion( const unsigned long long n ) {
     if ( n==0 ) return 0;
     if ( n==1 || n==2 ) return 1;
@@ -557,22 +617,19 @@ const unsigned long long EulerUtils::NumberTheory::Special::Fibonacci::fibonacci
     // TODO fill
     return 0;
 }
-const bool EulerUtils::NumberTheory::Special::Pandigital::isPandigital( string x ) {
+const bool EulerUtils::NumberTheory::Special::Pandigital::isPandigital( string x, bool inc_zero ) {
     set<unsigned short> digits;
-    // Init digits...
-    for ( unsigned short digit = 1 ; digit < 10 ; ++digit ) {
+    unsigned short start = ( inc_zero ? 0 : 1 );
+    for ( unsigned short digit = start ; digit < 10 ; ++digit )
         digits.insert(digit);
-//        cout << "digit : " << digit << endl;
-    }
     for ( auto i = 0 ; i < x.size() ; ++i ) {
         string ch = x.substr(i,1);
         digits.erase((unsigned short)stoi(ch));
     }
-
-    return digits.size() == 0;
+    return digits.size() == 0 && x.size() == ( inc_zero ? 10 : 9 );
 }
-const bool EulerUtils::NumberTheory::Special::Pandigital::isPandigital( unsigned int x ) {
-    return isPandigital( to_string(x) );
+const bool EulerUtils::NumberTheory::Special::Pandigital::isPandigital( unsigned int x, bool inc_zero ) {
+    return isPandigital( to_string(x), inc_zero );
 }
 const short EulerUtils::NumberTheory::Special::Perfect::isDeficientPerfectOrAbundant( const unsigned long long n ) {
     unsigned long long sum = 1;
@@ -644,6 +701,21 @@ string EulerUtils::Strings::float_to_string( const long double val, const int n 
     std::ostringstream out;
     out << std::setprecision(n) << val;
     return out.str();
+}
+bool EulerUtils::Strings::isPalindrome( string s ) {
+    unsigned int len = s.size();
+    for ( unsigned int lh_idx=0, rh_idx=(len-1) ; lh_idx<(len/2+1) ; ++lh_idx, --rh_idx )
+        if ( s.at(lh_idx) != s.at(rh_idx) ) return false;
+    return true;
+}
+string EulerUtils::Strings::removePaddingZeros( string s ) {
+    auto i = 0;
+    while ( true ) {
+        if ( s.at(i) == '0' )
+            s = s.substr(1);
+        else break;
+    }
+    return s;
 }
 const std::vector<std::string> EulerUtils::Strings::split( const std::string &s, char delim ) {
     std::vector<std::string> elems;

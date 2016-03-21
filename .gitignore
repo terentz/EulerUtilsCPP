@@ -4,4 +4,5 @@ lib/
 EulerUtils.o
 EulerUtils.cbp
 EulerUtils.layout
+libEulerUtils.a
 
